@@ -1,0 +1,74 @@
+<!doctype html public "≈">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Navigator.Connection Test</title>
+    <meta name="description" content="Test for the device connection type API.">
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <!--
+    <<<Readings>>>
+    See MDN: developer.mozilla.org/en-US/docs/DOM/window.navigator.connection
+    & the spec itself: www.w3.org/TR/netinfo-api/#the-connection-interface
+    David Calhoun's blog post on the topic:
+    davidbcalhoun.com/2010/using-navigator-connection-android
+    More recent (& changed) API:
+    dvcs.w3.org/hg/dap/raw-file/84a2fb7b753b/network-api/index.html#the-connection-interface
+    Another nice blog post, but covers the new API too:
+    nostrongbeliefs.com/a-quick-look-network-information-api/
+    -->
+    <h1>Navigator.Connection</h1>
+    <noscript>
+        The whole point of this page is to test if your browser supports a <em>JavaScript</em> API, so you'll need to have JavaScript enabled.
+    </noscript>
+    <div id="result"></div>
+    <script>
+    var conn = navigator.connection;
+    var result = document.getElementById( "result" );
+
+    if ( !conn ) {
+        result.innerHTML = "Looks like your browser does not support navigator.connection at all. Better luck next time.";
+    }
+
+    else {
+        if ( conn.type == conn.UNKNOWN ) {
+            result.innerHTML = 'Your connect is of type "unknown." That\'s super informative, right?';
+        }
+        else if ( conn.type == conn.CELL_2G ) {
+            result.innerHTML = 'You appear to be on a 2G connection.';
+        }
+        else if ( conn.type == conn.CELL_3G ) {
+            result.innerHTML = 'You appear to be on a 3G connection.';
+        }
+        else if ( conn.type == conn.WIFI ) {
+            result.innerHTML = 'You appear to be on a WiFi connection.';
+        }
+        else if ( conn.type == conn.ETHERNET ) {
+            result.innerHTML = 'You appear to be on an Ethernet connection.';
+        }
+
+        else if ( conn.bandwidth ) {
+            if ( conn.bandwidth = 0 ) {
+                result.innerHTML = 'You appear to be offline: your browser is reporting a bandwidth of zero.';
+            }
+            else if ( conn.bandwidth == Infinity ) {
+                result.innerHTML = 'Your browser is reporting a bandwidth of "infinity" but don\'t get cocky, that\'s just its way of saying it\'s clueless.';
+            }
+            else {
+                result.innerHTML = 'Your connection appears to be approximately ' + conn.bandwidth + 'MB/s.';
+            }
+        }
+
+        // a curio
+        else if ( conn.metered ) {
+            console.log( 'You\'re on a metered connection.' );
+        }
+
+        else {
+            result.innerHTML = 'Your connection type didn\'t come back as unknown, nor one of the short list of types (2G, 3G, WiFi, Ethernet). It\'s likely that the spec has added a connection type or I screwed something up.';
+        }
+    }
+    </script>
+</body>
+</html>
