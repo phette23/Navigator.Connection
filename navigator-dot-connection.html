@@ -32,43 +32,49 @@
         result.innerHTML = "Looks like your browser does not support navigator.connection at all. Better luck next time.";
     }
 
-    else {
+    if ( conn.type ) {
+        result.innerHTML += printType();
+    }
+
+    function printType() {
+        var typeHTML = 'Your browser supports <a href="http://www.w3.org/TR/2011/WD-netinfo-api-20110607/">the old API</a> which specifies connection types. Your connection appears to be ';
         if ( conn.type == conn.UNKNOWN ) {
-            result.innerHTML = 'Your connect is of type "unknown." That\'s super informative, right?';
+            typeHTML = '"unknown." That\'s super informative, right?';
         }
         else if ( conn.type == conn.CELL_2G ) {
-            result.innerHTML = 'You appear to be on a 2G connection.';
+            typeHTML = 'a 2G connection.';
         }
         else if ( conn.type == conn.CELL_3G ) {
-            result.innerHTML = 'You appear to be on a 3G connection.';
+            typeHTML = 'a 3G connection.';
         }
         else if ( conn.type == conn.WIFI ) {
-            result.innerHTML = 'You appear to be on a WiFi connection.';
+            typeHTML = 'a WiFi connection.';
         }
         else if ( conn.type == conn.ETHERNET ) {
-            result.innerHTML = 'You appear to be on an Ethernet connection.';
+            typeHTML = 'an Ethernet connection.';
         }
+        return typeHTML;
+    }
 
-        else if ( conn.bandwidth ) {
-            if ( conn.bandwidth = 0 ) {
-                result.innerHTML = 'You appear to be offline: your browser is reporting a bandwidth of zero.';
-            }
-            else if ( conn.bandwidth == Infinity ) {
-                result.innerHTML = 'Your browser is reporting a bandwidth of "infinity" but don\'t get cocky, that\'s just its way of saying it\'s clueless.';
-            }
-            else {
-                result.innerHTML = 'Your connection appears to be approximately ' + conn.bandwidth + 'MB/s.';
-            }
+    if ( conn.bandwidth ) {
+        if ( conn.bandwidth = 0 ) {
+            result.innerHTML = 'You appear to be offline: your browser is reporting a bandwidth of zero.';
         }
-
-        // a curio
-        else if ( conn.metered ) {
-            console.log( 'You\'re on a metered connection.' );
+        else if ( conn.bandwidth == Infinity ) {
+            result.innerHTML = 'Your browser is reporting a bandwidth of "infinity" but don\'t get cocky, that\'s just its way of saying it\'s clueless.';
         }
-
         else {
-            result.innerHTML = 'Your connection type didn\'t come back as unknown, nor one of the short list of types (2G, 3G, WiFi, Ethernet). It\'s likely that the spec has added a connection type or I screwed something up.';
+            result.innerHTML = 'Your connection appears to be approximately ' + conn.bandwidth + 'MB/s.';
         }
+    }
+
+    // a curio
+    else if ( conn.metered ) {
+        console.log( 'You\'re on a metered connection.' );
+    }
+
+    else {
+        result.innerHTML = 'Your connection type didn\'t come back as unknown, nor one of the short list of types (2G, 3G, WiFi, Ethernet). It\'s likely that the spec has added a connection type or I screwed something up.';
     }
     </script>
 </body>
