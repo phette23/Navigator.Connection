@@ -24,8 +24,9 @@
     </noscript>
     <div id="result"></div>
     <script>
-    var conn = navigator.connection;
-    var result = document.getElementById( "result" );
+    var nav = navigator,
+        conn = nav.mozConnection || nav.webkitConnection || nav.connection,
+        result = document.getElementById( "result" );
 
     if ( !conn ) {
         result.innerHTML = "Looks like your browser does not support navigator.connection at all. Better luck next time.";
